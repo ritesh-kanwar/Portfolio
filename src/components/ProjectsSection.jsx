@@ -5,7 +5,7 @@ const projects = [
     id: 1,
     title: "Cashiro",
     description: "A beautiful offline expense tracker android app built using kotlin and jetpack compose.",
-    image: "./src/assets/home_screen.png",
+    image: "./public/assets/home_screen.png",
     tags: ["Kotlin", "jetpack compose", "RoomDB"],
     demoUrl: "#",
     githubUrl: "https://github.com/ritesh-kanwar/Cashiro",
@@ -15,7 +15,7 @@ const projects = [
     title: "Rick & Morty Wiki ",
     description:
       "Android app exploring the Rick and Morty universe | Built with Kotlin, Jetpack Compose, Ktor & Coil",
-    image: "./src/assets/rick_screenshot_1.png",
+    image: "./public/assets/rick_screenshot_1.png",
     tags: ["Kotlin", "Ktor", "Rest API"],
     demoUrl: "#",
     githubUrl: "https://github.com/ritesh-kanwar/Rick-and-Morty-Wiki",
@@ -25,7 +25,7 @@ const projects = [
     title: "Tiny-Heros Platformer",
     description:
       "An addictive 2D infinite runner platformer built with JavaScript & Kaplay.js. Jump, dash & survive endless adventures in your browser.",
-    image: "./src/assets/screenshot_1.png",
+    image: "./public/assets/screenshot_1.png",
     tags: ["Javascript", "HTML", "Tailwind CSS"],
     demoUrl: "https://modestcat.itch.io/tiny-heros",
     githubUrl: "https://github.com/ritesh-kanwar/Tiny-Heros",
