@@ -69,6 +69,16 @@
       transform: scaleX(1);
     }
   }
+  @keyframes fade-in-3d {
+    from {
+      opacity: 0;
+      transform: scale(1.01);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 }
 
 @layer base {
@@ -98,266 +108,292 @@
 
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent;
   }
 
   html {
     @apply scroll-smooth;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overscroll-behavior: none;
+  }
+
+  #root {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
   }
 }
 
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
+@layer components {
+  /* Spline container and iframe styles */
+  .spline-container {
+    @apply relative w-full h-full transition-all duration-300;
+    contain: layout style paint;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .spline-container iframe {
+    @apply absolute top-0 left-0 w-full h-full border-0;
+    min-height: 100vh;
+    transition: pointer-events 0.3s ease;
+    pointer-events: auto;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    contain: layout style paint;
+  }
+
+  .spline-container iframe:focus {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* Hero section styles */
+  .hero-text-backdrop {
+    @apply relative;
+    background: rgba(var(--background-rgb, 255, 255, 255), 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .hero-text-overlay {
+    background: linear-gradient(
+      to top,
+      hsl(var(--background)) 0%,
+      hsl(var(--background) / 0.85) 25%,
+      hsl(var(--background) / 0.5) 50%,
+      hsl(var(--background) / 0.2) 75%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  .hero-fade-overlay {
+    background: linear-gradient(
+      to top,
+      hsl(var(--background)) 0%,
+      hsl(var(--background) / 0.9) 20%,
+      hsl(var(--background) / 0.6) 40%,
+      hsl(var(--background) / 0.3) 60%,
+      hsl(var(--background) / 0.1) 80%,
+      transparent 100%
+    );
+  }
+
+  .hero-section-container {
+    contain: layout style paint;
+    will-change: scroll-position;
+  }
+
+  /* Dark mode adjustments */
+  .dark .hero-text-backdrop {
+    background: rgba(var(--background-rgb, 0, 0, 0), 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .hero-text-overlay {
+    background: linear-gradient(
+      to top,
+      hsl(var(--background)) 0%,
+      hsl(var(--background) / 0.9) 25%,
+      hsl(var(--background) / 0.6) 50%,
+      hsl(var(--background) / 0.3) 75%,
+      transparent 100%
+    );
+  }
+
+  .dark .hero-fade-overlay {
+    background: linear-gradient(
+      to top,
+      hsl(var(--background)) 0%,
+      hsl(var(--background) / 0.95) 20%,
+      hsl(var(--background) / 0.7) 40%,
+      hsl(var(--background) / 0.4) 60%,
+      hsl(var(--background) / 0.15) 80%,
+      transparent 100%
+    );
+  }
+}
+
+@layer utilities {
+  .container {
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
 
   @media (width >= 640px) {
-    max-width: 640px;
+    .container {
+      max-width: 640px;
+    }
   }
   @media (width >= 768px) {
-    max-width: 768px;
+    .container {
+      max-width: 768px;
+    }
   }
   @media (width >= 1024px) {
-    max-width: 1024px;
+    .container {
+      max-width: 1024px;
+    }
   }
   @media (width >= 1280px) {
-    max-width: 1280px;
+    .container {
+      max-width: 1280px;
+    }
   }
   @media (width >= 1400px) {
-    max-width: 1400px;
+    .container {
+      max-width: 1400px;
+    }
+  }
+
+  .text-glow {
+    @apply relative;
+    text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+  }
+
+  .text-glow-enhanced {
+    text-shadow:
+      0 0 10px rgba(167, 139, 250, 0.7),
+      0 0 20px rgba(167, 139, 250, 0.5),
+      0 0 30px rgba(167, 139, 250, 0.3),
+      0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-hover {
+    @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
+  }
+
+  .gradient-border {
+    @apply relative rounded-md;
+    background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card)));
+    background-clip: padding-box;
+    border: 1px solid transparent;
+  }
+
+  .cosmic-button {
+    @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium
+           transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)]
+           hover:scale-105 active:scale-95;
+  }
+
+  .star {
+    @apply absolute rounded-full bg-white;
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+  }
+
+  .meteor {
+    @apply absolute bg-linear-to-r from-white via-white to-transparent rounded-full;
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-400 to-blue-400;
+  }
+
+  .backdrop-blur-cosmic {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(var(--background), 0.1);
+  }
+
+  .shadow-cosmic {
+    box-shadow:
+      0 0 20px rgba(var(--primary), 0.1),
+      0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .theme-transition {
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease,
+      filter 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .iframe-3d-load {
+    animation: fade-in-3d 2.5s ease-out;
+  }
+
+  .optimize-3d {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    contain: layout style paint;
+  }
+
+  .scroll-friendly {
+    pointer-events: auto;
+    touch-action: pan-y;
+  }
+
+  .scroll-blocked {
+    pointer-events: none;
+    touch-action: manipulation;
+  }
+
+  .interaction-hint {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+
+  .interaction-active {
+    transform: scale(1.001);
+    filter: brightness(1.05);
+  }
+
+  .interaction-inactive {
+    transform: scale(1);
+    filter: brightness(1);
   }
 }
 
-@utility text-glow {
-  @apply relative;
-  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
-}
-
-@utility card-hover {
-  @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
-}
-
-@utility gradient-border {
-  @apply relative rounded-md;
-  background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card)));
-  background-clip: padding-box;
-  border: 1px solid transparent;
-}
-
-@utility cosmic-button {
-  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium
-         transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)]
-         hover:scale-105 active:scale-95;
-}
-
-@utility star {
-  @apply absolute rounded-full bg-white;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
-}
-
-@utility meteor {
-  @apply absolute bg-linear-to-r from-white via-white to-transparent rounded-full;
-  box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
-}
-
-/* Enhanced utilities for Spline integration */
-@utility bg-gradient-radial {
-  background: radial-gradient(circle, var(--tw-gradient-stops));
-}
-
-@utility text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-400 to-blue-400;
-}
-
-/* Custom backdrop blur with better browser support */
-@utility backdrop-blur-cosmic {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background: rgba(var(--background), 0.1);
-}
-
-/* Enhanced shadows for cosmic theme */
-@utility shadow-cosmic {
-  box-shadow:
-    0 0 20px rgba(var(--primary), 0.1),
-    0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Smooth theme transition */
-@utility theme-transition {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    filter 0.3s ease,
-    opacity 0.3s ease;
-}
-
-#root {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
-}
-
-/* Enhanced responsive iframe handling */
-@utility spline-container {
-  @apply relative w-full h-full;
-}
-
-@utility spline-container iframe {
-  @apply absolute top-0 left-0 w-full h-full border-0;
-  min-height: 100vh;
-  pointer-events: auto;
-}
-
-/* Enhanced text backdrop for better readability */
-@utility hero-text-backdrop {
-  @apply bg-gradient-to-t from-background/80 via-background/40 to-background/10;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Improved gradient overlay for better blending */
-@utility hero-fade-overlay {
-  background: linear-gradient(
-    to top,
-    hsl(var(--background)) 0%,
-    hsl(var(--background) / 0.9) 20%,
-    hsl(var(--background) / 0.6) 40%,
-    hsl(var(--background) / 0.3) 60%,
-    hsl(var(--background) / 0.1) 80%,
-    transparent 100%
-  );
-}
-
-/* Responsive adjustments for mobile devices */
+/* Mobile responsive adjustments */
 @media (max-width: 640px) {
   .hero-mobile-adjust {
     padding-bottom: 2rem;
+    position: relative;
   }
 
   .hero-mobile-adjust .cosmic-button {
     @apply px-4 py-2 text-sm;
   }
-}
 
-/* Smooth loading animation for the 3D asset */
-@keyframes fade-in-3d {
-  from {
-    opacity: 0;
-    transform: scale(1.05);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
+  .mobile-interaction-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    background: transparent;
+    z-index: 5;
   }
 }
 
-@utility iframe-3d-load {
-  animation: fade-in-3d 1.5s ease-out;
-}
-
-/* Enhanced text glow for better visibility over 3D background */
-@utility text-glow-enhanced {
-  text-shadow:
-    0 0 10px rgba(167, 139, 250, 0.5),
-    0 0 20px rgba(167, 139, 250, 0.3),
-    0 0 30px rgba(167, 139, 250, 0.1);
-}
-
-/* Performance optimization for the 3D iframe */
-@utility optimize-3d {
-  transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* Dark mode specific adjustments */
-.dark .hero-fade-overlay {
-  background: linear-gradient(
-    to top,
-    hsl(var(--background)) 0%,
-    hsl(var(--background) / 0.95) 20%,
-    hsl(var(--background) / 0.7) 40%,
-    hsl(var(--background) / 0.4) 60%,
-    hsl(var(--background) / 0.15) 80%,
-    transparent 100%
-  );
-}
-
-/* Accessibility improvements */
-@media (prefers-reduced-motion: reduce) {
-  .iframe-3d-load {
-    animation: none;
-  }
-
-  .animate-bounce {
-    animation: none;
-  }
-}
-
-/* High DPI display optimizations */
-@media (min-resolution: 2dppx) {
-  .spline-container iframe {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
-}
-/* Enhanced responsive iframe handling with smart interaction */
-@utility spline-container {
-  @apply relative w-full h-full transition-all duration-300;
-}
-
-@utility spline-container iframe {
-  @apply absolute top-0 left-0 w-full h-full border-0;
-  min-height: 100vh;
-  transition: pointer-events 0.3s ease;
-}
-
-/* Enhanced text backdrop for better readability without blocking interaction */
-@utility hero-text-backdrop {
-  @apply relative;
-  background: rgba(var(--background-rgb, 255, 255, 255), 0.15);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-/* Optimized gradient overlay only for text area */
-@utility hero-text-overlay {
-  background: linear-gradient(
-    to top,
-    hsl(var(--background)) 0%,
-    hsl(var(--background) / 0.85) 25%,
-    hsl(var(--background) / 0.5) 50%,
-    hsl(var(--background) / 0.2) 75%,
-    transparent 100%
-  );
-  pointer-events: none;
-}
-
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-/* Prevent scroll hijacking on mobile */
 @media (max-width: 768px) {
   .hero-mobile-adjust {
     padding-bottom: 1rem;
     touch-action: pan-y;
   }
 
-  .hero-mobile-adjust .cosmic-button {
-    @apply px-4 py-2 text-sm;
-  }
-
-  /* Force scroll on mobile when not explicitly interacting */
   .spline-container {
     touch-action: pan-y;
   }
@@ -367,84 +403,12 @@ html {
   }
 }
 
-/* Interaction states */
-@utility interaction-active {
-  transform: scale(1.001);
-  filter: brightness(1.05);
-}
-
-@utility interaction-inactive {
-  transform: scale(1);
-  filter: brightness(1);
-}
-
-/* Smooth loading animation for the 3D asset */
-@keyframes fade-in-3d {
-  from {
-    opacity: 0;
-    transform: scale(1.01);
+/* High DPI display optimizations */
+@media (min-resolution: 2dppx) {
+  .spline-container iframe {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@utility iframe-3d-load {
-  animation: fade-in-3d 2.5s ease-out;
-}
-
-/* Enhanced text glow with better contrast */
-@utility text-glow-enhanced {
-  text-shadow:
-    0 0 10px rgba(167, 139, 250, 0.7),
-    0 0 20px rgba(167, 139, 250, 0.5),
-    0 0 30px rgba(167, 139, 250, 0.3),
-    0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-/* Performance optimization for the 3D iframe */
-@utility optimize-3d {
-  transform: translateZ(0);
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  contain: layout style paint;
-}
-
-/* Scroll enhancement utilities */
-@utility scroll-friendly {
-  pointer-events: auto;
-  touch-action: pan-y;
-}
-
-@utility scroll-blocked {
-  pointer-events: none;
-  touch-action: manipulation;
-}
-
-/* Interactive hint styling */
-@utility interaction-hint {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
-  font-weight: 500;
-}
-
-/* Dark mode specific adjustments */
-.dark .hero-text-backdrop {
-  background: rgba(var(--background-rgb, 0, 0, 0), 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.dark .hero-text-overlay {
-  background: linear-gradient(
-    to top,
-    hsl(var(--background)) 0%,
-    hsl(var(--background) / 0.9) 25%,
-    hsl(var(--background) / 0.6) 50%,
-    hsl(var(--background) / 0.3) 75%,
-    transparent 100%
-  );
 }
 
 /* Accessibility improvements */
@@ -468,63 +432,6 @@ html {
     filter: none !important;
   }
 }
-
-/* High DPI display optimizations */
-@media (min-resolution: 2dppx) {
-  .spline-container iframe {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
-}
-
-/* Focus management for accessibility */
-.spline-container iframe:focus {
-  outline: 2px solid hsl(var(--primary));
-  outline-offset: 2px;
-}
-
-/* Prevent text selection conflicts */
-.spline-container {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Scroll behavior optimization */
-body {
-  overscroll-behavior: none;
-}
-
-/* Enhanced mobile interaction zones */
-@media (max-width: 640px) {
-  .hero-mobile-adjust {
-    position: relative;
-  }
-
-  /* Mobile interaction overlay */
-  .mobile-interaction-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 50%;
-    background: transparent;
-    z-index: 5;
-  }
-}
-
-/* Smooth transitions for all interaction states */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Optimize for smooth scrolling performance */
-.hero-section-container {
-  contain: layout style paint;
-  will-change: scroll-position;
-}
-
 
 
 
