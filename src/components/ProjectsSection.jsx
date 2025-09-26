@@ -1,11 +1,16 @@
 import { ArrowRight, ExternalLink, Github } from "lucide-react";
 
+// Import images directly (most reliable method)
+import homeScreen from "/assets/home_screen.png";
+import rickScreenshot from "/assets/rick_screenshot_1.png";
+import screenshot1 from "/assets/screenshot_1.png";
+
 const projects = [
   {
     id: 1,
     title: "Cashiro",
     description: "A beautiful offline expense tracker android app built using kotlin and jetpack compose.",
-    image: "./public/assets/home_screen.png",
+    image: homeScreen, // Using imported image
     tags: ["Kotlin", "jetpack compose", "RoomDB"],
     demoUrl: "#",
     githubUrl: "https://github.com/ritesh-kanwar/Cashiro",
@@ -15,7 +20,7 @@ const projects = [
     title: "Rick & Morty Wiki ",
     description:
       "Android app exploring the Rick and Morty universe | Built with Kotlin, Jetpack Compose, Ktor & Coil",
-    image: "./public/assets/rick_screenshot_1.png",
+    image: rickScreenshot, // Using imported image
     tags: ["Kotlin", "Ktor", "Rest API"],
     demoUrl: "#",
     githubUrl: "https://github.com/ritesh-kanwar/Rick-and-Morty-Wiki",
@@ -25,7 +30,7 @@ const projects = [
     title: "Tiny-Heros Platformer",
     description:
       "An addictive 2D infinite runner platformer built with JavaScript & Kaplay.js. Jump, dash & survive endless adventures in your browser.",
-    image: "./public/assets/screenshot_1.png",
+    image: screenshot1, // Using imported image
     tags: ["Javascript", "HTML", "Tailwind CSS"],
     demoUrl: "https://modestcat.itch.io/tiny-heros",
     githubUrl: "https://github.com/ritesh-kanwar/Tiny-Heros",
@@ -52,18 +57,25 @@ export const ProjectsSection = () => {
               key={key}
               className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover"
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden bg-gray-100">
                 <img
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  onLoad={() => console.log(`✅ Loaded: ${project.title}`)}
+                  onError={(e) => {
+                    console.error(`❌ Failed to load: ${project.title}`, e);
+                  }}
                 />
               </div>
 
               <div className="p-6">
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
-                    <span className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
+                  {project.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground"
+                    >
                       {tag}
                     </span>
                   ))}
@@ -78,6 +90,7 @@ export const ProjectsSection = () => {
                     <a
                       href={project.demoUrl}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="text-foreground/80 hover:text-primary transition-colors duration-300"
                     >
                       <ExternalLink size={20} />
@@ -85,6 +98,7 @@ export const ProjectsSection = () => {
                     <a
                       href={project.githubUrl}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="text-foreground/80 hover:text-primary transition-colors duration-300"
                     >
                       <Github size={20} />
@@ -100,6 +114,7 @@ export const ProjectsSection = () => {
           <a
             className="cosmic-button w-fit flex items-center mx-auto gap-2"
             target="_blank"
+            rel="noopener noreferrer"
             href="https://github.com/ritesh-kanwar?tab=repositories"
           >
             Check My Github <ArrowRight size={16} />

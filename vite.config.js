@@ -6,7 +6,7 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: import.meta.env.MODE === 'production' ? '/portfolio/' : '/',  // Dynamic base: '/' in dev, '/portfolio/' in prod
+  base: "/portfolio",
   resolve: {
     alias: {
         "@": path.resolve(__dirname, "./src")
