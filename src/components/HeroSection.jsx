@@ -33,7 +33,7 @@ export const HeroSection = () => {
 
             {/* Content container with left padding to account for indicator */}
             <div className="pl-8 sm:pl-10 md:pl-12 space-y-4 sm:space-y-6">
-              <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold tracking-tight text-glow-enhanced text-left">
+              <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold tracking-tight  text-left">
                 <span className="opacity-0 animate-fade-in block sm:inline"> Hi, I'm</span>
                 <span className="text-primary opacity-0 animate-fade-in-delay-1 block sm:inline">
                   {" "}
