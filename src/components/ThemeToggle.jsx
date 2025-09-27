@@ -1,3 +1,4 @@
+// ThemeToggle.jsx
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "../lib/utils";
@@ -41,7 +42,7 @@ export const ThemeToggle = () => {
     <button
       onClick={toggleTheme}
       className={cn(
-        "fixed max-sm:hidden right-5 z-50 p-2 rounded-full transition-all duration-300",
+        "fixed hidden md:block right-5 z-50 p-2 rounded-full transition-all duration-300",
         "focus:outline-none",
         // Adjust top position based on scroll state to match navbar
         isScrolled ? "top-2" : "top-2"
