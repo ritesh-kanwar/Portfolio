@@ -16,7 +16,7 @@ export const AboutSection = () => {
             </h3>
 
             <p className="text-muted-foreground">
-              I have started build android and web apps for 3 years and now I specialize
+              I have started building android and web apps for 3 years and now I specialize
               in creating responsive, accessible, and performant web
               applications using modern technologies.
             </p>
