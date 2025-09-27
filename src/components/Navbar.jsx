@@ -23,12 +23,14 @@ export const Navbar = () => {
 
     // Initialize theme
     const storedTheme = localStorage.getItem("theme");
-    if (storedTheme === "dark") {
+    if (storedTheme === "light") {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove("dark");
+    } else {
+      // Default to dark mode
+      localStorage.setItem("theme", "dark");
       setIsDarkMode(true);
       document.documentElement.classList.add("dark");
-    } else {
-      localStorage.setItem("theme", "light");
-      setIsDarkMode(false);
     }
 
     window.addEventListener("scroll", handleScroll);
@@ -53,7 +55,7 @@ export const Navbar = () => {
         "fixed w-full z-40 transition-all duration-300 backdrop-blur-md",
         isScrolled
           ? "py-3 bg-background/80 shadow-xs"
-          : "py-5 bg-background/0"
+          : "py-5 bg-background/20"
       )}
     >
       <div className="container flex items-center justify-between">
