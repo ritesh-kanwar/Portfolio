@@ -53,7 +53,7 @@ export const Navbar = () => {
         "fixed w-full z-40 transition-all duration-300 backdrop-blur-md",
         isScrolled
           ? "py-3 bg-background/80 shadow-xs"
-          : "py-5 bg-background/25"
+          : "py-5 bg-background/0"
       )}
     >
       <div className="container flex items-center justify-between">
@@ -68,7 +68,7 @@ export const Navbar = () => {
         </a>
 
         {/* desktop nav */}
-        <div className="hidden md:flex space-x-8">
+        <div className="hidden md:flex items-center space-x-8">
           {navItems.map((item, key) => (
             <a
               key={key}
@@ -78,6 +78,19 @@ export const Navbar = () => {
               {item.name}
             </a>
           ))}
+
+          {/* Desktop theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 text-foreground rounded-full transition-colors duration-300 hover:bg-foreground/10"
+            aria-label="Toggle theme"
+          >
+            {isDarkMode ? (
+              <Sun className="h-5 w-5 text-yellow-300" />
+            ) : (
+              <Moon className="h-5 w-5 text-blue-900" />
+            )}
+          </button>
         </div>
 
         {/* mobile nav icons */}

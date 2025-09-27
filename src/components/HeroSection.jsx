@@ -28,7 +28,7 @@ export const HeroSection = () => {
           className="w-full h-full object-cover object-center"
         />
         {/* Optional overlay for better text readability */}
-        <div className="absolute inset-0 bg-background/20"></div>
+        <div className="absolute inset-0 bg-background/0"></div>
       </div>
 
       {/* Text container - Bottom-positioned on both mobile and desktop */}
