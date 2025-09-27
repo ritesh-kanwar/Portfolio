@@ -50,100 +50,104 @@ export const Navbar = () => {
   };
 
   return (
-    <nav
-      className={cn(
-        "fixed w-full z-40 transition-all duration-300 backdrop-blur-md",
-        isScrolled
-          ? "py-3 bg-background/80 shadow-xs"
-          : "py-5 bg-background/20"
-      )}
-    >
-      <div className="container flex items-center justify-between">
-        <a
-          className="text-xl font-bold text-primary flex items-center"
-          href="#hero"
-        >
-          <span className="relative z-10">
-            <span className="text-glow text-foreground"> Ritesh's </span>{" "}
-            Portfolio
-          </span>
-        </a>
-
-        {/* desktop nav */}
-        <div className="hidden md:flex items-center space-x-8">
-          {navItems.map((item, key) => (
-            <a
-              key={key}
-              href={item.href}
-              className="text-foreground/80 hover:text-primary transition-colors duration-300"
-            >
-              {item.name}
-            </a>
-          ))}
-
-          {/* Desktop theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 text-foreground rounded-full transition-colors duration-300 hover:bg-foreground/10"
-            aria-label="Toggle theme"
+    <>
+      <nav
+        className={cn(
+          "fixed w-full z-40 transition-all duration-300 backdrop-blur-md",
+          isScrolled
+            ? "py-3 bg-background/80 shadow-xs"
+            : "py-5 bg-background/0"
+        )}
+      >
+        <div className="container flex items-center justify-between">
+          <a
+            className="text-xl font-bold text-primary flex items-center"
+            href="#hero"
           >
-            {isDarkMode ? (
-              <Sun className="h-5 w-5 text-yellow-300" />
-            ) : (
-              <Moon className="h-5 w-5 text-blue-900" />
-            )}
-          </button>
-        </div>
+            <span className="relative z-10">
+              <span className="text-glow text-foreground"> Ritesh's </span>{" "}
+              Portfolio
+            </span>
+          </a>
 
-        {/* mobile nav icons */}
-        <div className="md:hidden flex items-center space-x-3 z-50">
-          {/* Theme toggle for mobile */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 text-foreground rounded-full transition-colors duration-300"
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? (
-              <Sun className="h-6 w-6 text-yellow-300" />
-            ) : (
-              <Moon className="h-6 w-6 text-blue-900" />
-            )}
-          </button>
-
-          {/* Menu toggle */}
-          <button
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="p-2 text-foreground"
-            aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {/* mobile menu overlay */}
-        <div
-          className={cn(
-            "fixed inset-0 bg-background/95 backdrop-blur-md z-40 flex flex-col items-center justify-center",
-            "transition-all duration-300 md:hidden",
-            isMenuOpen
-              ? "opacity-100 pointer-events-auto"
-              : "opacity-0 pointer-events-none"
-          )}
-        >
-          <div className="flex flex-col space-y-8 text-xl">
+          {/* desktop nav */}
+          <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item, key) => (
               <a
                 key={key}
                 href={item.href}
                 className="text-foreground/80 hover:text-primary transition-colors duration-300"
+              >
+                {item.name}
+              </a>
+            ))}
+
+            {/* Desktop theme toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-foreground rounded-full transition-colors duration-300 hover:bg-foreground/10"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? (
+                <Sun className="h-5 w-5 text-yellow-300" />
+              ) : (
+                <Moon className="h-5 w-5 text-blue-900" />
+              )}
+            </button>
+          </div>
+
+          {/* mobile nav icons */}
+          <div className="md:hidden flex items-center space-x-3 relative z-50">
+            {/* Theme toggle for mobile */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-foreground rounded-full transition-colors duration-300"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? (
+                <Sun className="h-6 w-6 text-yellow-300" />
+              ) : (
+                <Moon className="h-6 w-6 text-blue-900" />
+              )}
+            </button>
+
+            {/* Menu toggle */}
+            <button
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className="p-2 text-foreground relative z-50"
+              aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* mobile menu overlay - moved outside navbar */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-background/95 backdrop-blur-md z-50 flex flex-col items-center justify-center md:hidden">
+          <div className="flex flex-col space-y-8 text-xl">
+            {navItems.map((item, key) => (
+              <a
+                key={key}
+                href={item.href}
+                className="text-foreground/80 hover:text-primary transition-colors duration-300 text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
               </a>
             ))}
           </div>
+          {/* Close button overlay */}
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="absolute top-5 right-5 p-2 text-foreground z-50"
+            aria-label="Close Menu"
+          >
+            <X size={24} />
+          </button>
         </div>
-      </div>
-    </nav>
+      )}
+    </>
   );
 };
